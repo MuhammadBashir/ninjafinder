@@ -1,19 +1,15 @@
 const express = require('express');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost:27017/ninjango',{useNewUrlParser: true});
+mongoose.Promise = global.Promise;
+
 const app = express();
+
 app.use(express.json());
-
-const Ninjas = [
-    {name:'Tadashi Hamada',rank:'Black Belt', available:false },
-    {name:'Tinashi Hamada',rank:'White Belt', available:true },
-    {name:'Joye Lee',rank:'Black Belt', available:false },
-    {name:'Tony Choi',rank:'Green Belt', available:true },
-    {name:'Hyrem Peng',rank:'Black Belt', available:true }
-];
-
-app.get('/ninjas',function(req, res){
-    res.send(Ninjas);
+app.use('/api', require('./routes/api'));
+app.use(function(err, req, res, next){
+    res.status(422).send({error: err._message});
 });
-
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server running on port: ${port}`));
-
