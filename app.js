@@ -5,7 +5,7 @@ mongoose.connect('mongodb://localhost:27017/ninjango',{useNewUrlParser: true});
 mongoose.Promise = global.Promise;
 
 const app = express();
-
+app.use(express.static('public'));
 app.use(express.json());
 app.use('/api', require('./routes/api'));
 app.use(function(err, req, res, next){
